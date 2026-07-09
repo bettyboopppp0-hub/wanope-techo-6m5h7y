@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>ワンオペ育児おたすけ手帳</title>
+<meta name="description" content="泣き止まない・寝ない・ママ限界…そんな夜にひらく、ワンオペ育児のお守りアプリ">
+<meta name="theme-color" content="#fff7f9">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="おたすけ手帳">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff7f9; --card:#ffffff; --pink:#ffb7c9; --pink-d:#ff8fab; --pink-l:#ffe3ea;
+  --lav:#e6e0f8; --mint:#dcf2e7; --cream:#fff3d9; --sky:#ddeefc;
+  --text:#5a4a52; --sub:#a08a94; --line:#f3e2e8;
+  --shadow:0 4px 20px rgba(255,143,171,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic',sans-serif;
+  background:var(--bg); color:var(--text); font-size:15px; line-height:1.7;
+  padding-bottom:calc(74px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased;
+}
+.page{display:none;max-width:560px;margin:0 auto;padding:18px 16px 24px;animation:fadeIn .35s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:20px;font-weight:700;margin-bottom:2px}
+.date-sub{font-size:12.5px;color:var(--sub);margin-bottom:14px}
+.card{background:var(--card);border-radius:20px;padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.card h2{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.small{font-size:12px;color:var(--sub)}
+button{font-family:inherit;border:none;cursor:pointer;color:inherit}
+/* ------- praise banner ------- */
+.praise{
+  background:linear-gradient(135deg,#ffe3ea,#e6e0f8);
+  border-radius:20px;padding:16px 18px;margin-bottom:14px;
+  font-weight:700;font-size:14.5px;box-shadow:var(--shadow);
+}
+.praise .streak{font-size:12px;font-weight:500;color:var(--sub);margin-top:4px}
+/* ------- mood ------- */
+.mood-row{display:flex;justify-content:space-between;gap:6px}
+.mood-btn{flex:1;background:var(--bg);border-radius:16px;padding:10px 0 6px;text-align:center;transition:all .2s;border:2px solid transparent}
+.mood-btn .emo{font-size:26px;display:block}
+.mood-btn .lbl{font-size:10.5px;color:var(--sub)}
+.mood-btn.sel{background:var(--pink-l);border-color:var(--pink);transform:scale(1.06)}
+/* ------- checks ------- */
+.chk{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px dashed var(--line);cursor:pointer}
+.chk:last-child{border-bottom:none}
+.chk .box{width:24px;height:24px;border-radius:8px;border:2px solid var(--pink);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;transition:all .15s;background:#fff}
+.chk.done .box{background:var(--pink-d);border-color:var(--pink-d)}
+.chk.done .txt{color:var(--sub);text-decoration:line-through}
+.chk .txt{font-size:14px;flex:1}
+/* ------- textarea / input ------- */
+textarea,input[type=text],input[type=month],input[type=number]{
+  width:100%;border:2px solid var(--line);border-radius:14px;padding:10px 12px;
+  font-family:inherit;font-size:14px;color:var(--text);background:#fff;outline:none;
+}
+textarea:focus,input:focus{border-color:var(--pink)}
+textarea{resize:none;height:76px}
+.btn{
+  display:inline-block;background:var(--pink-d);color:#fff;font-weight:700;
+  border-radius:999px;padding:10px 22px;font-size:14px;box-shadow:0 4px 12px rgba(255,143,171,.35);
+  transition:transform .15s;
+}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:#fff;color:var(--pink-d);border:2px solid var(--pink);box-shadow:none}
+.btn.wide{width:100%;text-align:center}
+/* ------- SOS grid ------- */
+.sos-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sos-card{border-radius:20px;padding:16px 14px;text-align:left;box-shadow:var(--shadow);transition:transform .15s;position:relative;overflow:hidden}
+.sos-card:active{transform:scale(.97)}
+.sos-card .emo{font-size:30px;display:block;margin-bottom:6px}
+.sos-card .ttl{font-weight:700;font-size:14px;display:block}
+.sos-card .sb{font-size:11px;color:var(--sub);display:block;margin-top:2px}
+.emg{background:linear-gradient(135deg,#fff3d9,#ffe3ea);border-radius:20px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.emg .row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed rgba(160,138,148,.3)}
+.emg .row:last-child{border-bottom:none}
+.emg a{color:var(--pink-d);font-weight:700;text-decoration:none;font-size:16px}
+.emg .nm{font-size:12.5px}
+/* ------- SOS detail (sheet) ------- */
+.sheet{
+  position:fixed;inset:0;background:rgba(90,74,82,.35);z-index:50;display:none;
+  align-items:flex-end;justify-content:center;
+}
+.sheet.open{display:flex}
+.sheet-body{
+  background:var(--bg);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;
+  border-radius:24px 24px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom));
+  animation:slideUp .3s ease;
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sheet-head .emo{font-size:34px}
+.sheet-head h3{font-size:18px;font-weight:700}
+.sheet-close{margin-left:auto;background:#fff;border-radius:999px;width:34px;height:34px;font-size:16px;color:var(--sub);box-shadow:var(--shadow)}
+.sheet .lead{font-size:13.5px;color:var(--sub);margin-bottom:12px}
+.step{background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start;box-shadow:var(--shadow);cursor:pointer}
+.step .num{background:var(--pink-l);color:var(--pink-d);font-weight:700;border-radius:999px;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px}
+.step.done{opacity:.55}
+.step.done .num{background:var(--pink-d);color:#fff}
+.step b{display:block;font-size:14px}
+.step span{font-size:12.5px;color:var(--sub);display:block}
+.ngbox{background:#fff3d9;border-radius:16px;padding:12px 14px;margin:12px 0;font-size:13px}
+.ngbox b{color:#c77b2a}
+.yell{background:linear-gradient(135deg,var(--pink-l),var(--lav));border-radius:16px;padding:14px;font-weight:700;font-size:13.5px;text-align:center;margin-top:8px}
+/* ------- calendar ------- */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-head button{background:#fff;border-radius:999px;width:34px;height:34px;box-shadow:var(--shadow);font-size:14px;color:var(--pink-d)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal-grid .dow{font-size:11px;color:var(--sub);padding:4px 0}
+.cal-cell{aspect-ratio:1;border-radius:12px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--sub);cursor:pointer;box-shadow:0 2px 8px rgba(255,143,171,.08)}
+.cal-cell.empty{background:transparent;box-shadow:none;cursor:default}
+.cal-cell.today{border:2px solid var(--pink)}
+.cal-cell.mile{background:var(--pink-l);font-weight:700}
+.cal-cell .memo{font-size:14px;line-height:1}
+.day-detail{margin-top:14px}
+/* ------- care ------- */
+.breath-wrap{text-align:center;padding:10px 0 6px}
+.breath-circle{
+  width:170px;height:170px;border-radius:50%;margin:14px auto;
+  background:radial-gradient(circle at 35% 30%,#ffe3ea,#ffb7c9);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;color:#fff;
+  transition:transform 4s ease-in-out;box-shadow:0 8px 30px rgba(255,143,171,.35);
+}
+.breath-circle.inhale{transform:scale(1.35)}
+.breath-circle.hold{transform:scale(1.35)}
+.breath-circle.exhale{transform:scale(1)}
+.anger-num{font-size:60px;font-weight:700;color:var(--pink-d);text-align:center;padding:8px 0}
+.gacha-msg{background:linear-gradient(135deg,var(--mint),var(--sky));border-radius:16px;padding:16px;text-align:center;font-weight:700;font-size:14.5px;margin-top:10px;min-height:58px;display:flex;align-items:center;justify-content:center}
+/* ------- settings ------- */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.set-row:last-child{border-bottom:none}
+.set-row .lb{font-size:13.5px;flex-shrink:0}
+.set-row input{max-width:180px}
+.custom-item{display:flex;align-items:center;gap:8px;padding:6px 0}
+.custom-item .del{background:var(--pink-l);color:var(--pink-d);border-radius:999px;width:26px;height:26px;font-size:13px;flex-shrink:0}
+.guide-step{display:flex;gap:10px;padding:8px 0;font-size:13.5px}
+.guide-step .n{background:var(--lav);border-radius:999px;min-width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+/* ------- rakuten banner ------- */
+.rk-banner{display:block;background:linear-gradient(135deg,#fff3d9,#ffe3ea);border-radius:20px;padding:14px 16px;text-decoration:none;color:var(--text);box-shadow:var(--shadow);margin-bottom:14px}
+.rk-banner .pr{font-size:10px;color:var(--sub)}
+.rk-banner b{font-size:14px}
+.rk-banner span{font-size:12px;color:var(--sub);display:block}
+/* ------- tab bar ------- */
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);
+  display:flex;max-width:100%;justify-content:center;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabbar .inner{display:flex;width:100%;max-width:560px}
+.tab{flex:1;padding:9px 0 7px;text-align:center;font-size:10px;color:var(--sub);background:none}
+.tab .ic{font-size:21px;display:block;margin-bottom:1px;transition:transform .2s}
+.tab.active{color:var(--pink-d);font-weight:700}
+.tab.active .ic{transform:translateY(-2px) scale(1.12)}
+.toast{
+  position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);
+  background:var(--text);color:#fff;font-size:13px;padding:10px 20px;border-radius:999px;
+  opacity:0;transition:all .3s;z-index:60;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%)}
+/* ------- baby log ------- */
+.log-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.log-btn{background:var(--bg);border-radius:16px;padding:10px 2px 8px;text-align:center;transition:transform .15s}
+.log-btn:active{transform:scale(.94)}
+.log-btn .emo{font-size:24px;display:block}
+.log-btn .lbl{font-size:11px;font-weight:700;display:block}
+.log-btn .cnt{font-size:10px;color:var(--sub);display:block}
+.log-list{margin-top:10px;max-height:150px;overflow-y:auto}
+.log-item{display:flex;align-items:center;gap:8px;font-size:13px;padding:5px 2px;border-bottom:1px dashed var(--line)}
+.log-item .del{margin-left:auto;background:var(--pink-l);color:var(--pink-d);border-radius:999px;width:24px;height:24px;font-size:12px;flex-shrink:0}
+/* ------- noise ------- */
+.noise-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.noise-btn{background:var(--bg);border-radius:16px;padding:10px 2px 8px;text-align:center;border:2px solid transparent}
+.noise-btn .emo{font-size:24px;display:block}
+.noise-btn .lbl{font-size:11px;font-weight:700}
+.noise-btn.on{background:var(--sky);border-color:#8fc3ee}
+.chip-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chip{background:var(--bg);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;border:2px solid transparent}
+.chip.on{background:var(--pink-l);border-color:var(--pink)}
+/* ------- templates ------- */
+.tpl{background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.tpl .to{font-size:11px;font-weight:700;color:var(--pink-d);margin-bottom:2px}
+.tpl p{font-size:13px;margin-bottom:8px}
+/* ------- baby guide ------- */
+.guide-line{font-size:13px;padding:4px 0}
+.guide-line b{color:var(--pink-d)}
+</style>
+</head>
+<body>
+
+<!-- ================= きょう ================= -->
+<div class="page active" id="page-home">
+  <h1 id="greet">こんにちは、ママ 🌷</h1>
+  <div class="date-sub" id="today-str"></div>
+
+  <div class="praise" id="praise-banner">
+    きょうも、ここをひらいた。それだけで えらい。
+    <div class="streak" id="streak-str"></div>
+  </div>
+
+  <div class="card" id="baby-guide" style="display:none"></div>
+
+  <div class="card">
+    <h2>🍼 赤ちゃんきろく</h2>
+    <div class="small" style="margin-bottom:8px">タップするだけ。回数と前回の時間がひと目でわかるよ</div>
+    <div class="log-grid" id="log-grid"></div>
+    <div class="log-list" id="log-list"></div>
+  </div>
+
+  <div class="card">
+    <h2>💗 いまのきもち</h2>
+    <div class="mood-row" id="mood-row"></div>
+  </div>
+
+  <div class="card">
+    <h2>🌟 きょう できたこと</h2>
+    <div class="small" style="margin-bottom:6px">1つでもチェックできたら、きょうは合格！</div>
+    <div id="check-list"></div>
+  </div>
+
+  <div class="card">
+    <h2>📝 つぶやきノート</h2>
+    <div class="small" style="margin-bottom:8px">しんどい気持ちも、うれしかったことも。誰にも見られないから安心して吐き出してOK</div>
+    <textarea id="memo" placeholder="きょうの気持ちをそのまま書いてね"></textarea>
+    <div style="text-align:right;margin-top:10px"><button class="btn" onclick="saveMemo()">保存する</button></div>
+  </div>
+
+  <div class="card">
+    <h2>📤 きょうのがんばりを画像に</h2>
+    <div class="small" style="margin-bottom:10px">できたこと＋きもちをかわいいカード画像に。SNSや夫への共有にどうぞ</div>
+    <button class="btn wide" onclick="shareImage()">がんばりカードを作る</button>
+  </div>
+
+  <a class="rk-banner" id="rk-banner" style="display:none" target="_blank" rel="sponsored noopener">
+    <div class="pr">PR</div>
+    <b>🛒 ママの子育てラクになる愛用品はこちら</b>
+    <span>ワンオペを助けてくれた神アイテムを紹介中 →</span>
+  </a>
+</div>
+
+<!-- ================= おたすけ ================= -->
+<div class="page" id="page-sos">
+  <h1>おたすけカード 🆘</h1>
+  <div class="date-sub">困った「いま」に。タップすると対処法がひらくよ</div>
+
+  <div class="emg">
+    <div style="font-weight:700;font-size:13.5px;margin-bottom:2px">🚨 迷ったらここに電話</div>
+    <div class="row"><span class="nm">こども医療でんわ相談（夜間・休日）</span><a href="tel:%238000">#8000</a></div>
+    <div class="row"><span class="nm">意識がない・けいれん・呼吸がおかしい</span><a href="tel:119">119</a></div>
+    <div class="row"><span class="nm">ママのこころ よりそいホットライン</span><a href="tel:0120279338">0120-279-338</a></div>
+    <div class="small" style="margin-top:6px">※このアプリは目安です。心配なときは迷わず受診・相談してね</div>
+  </div>
+
+  <div class="sos-grid" id="sos-grid"></div>
+
+  <div style="margin-top:24px">
+    <h2 style="font-size:15px;font-weight:700;margin-bottom:2px">💬 そのまま送れる「お願いテンプレ」</h2>
+    <div class="small" style="margin-bottom:10px">コピーしてLINEに貼るだけ。頼るのが苦手なママの味方</div>
+    <div id="tpl-list"></div>
+  </div>
+</div>
+
+<!-- ================= カレンダー ================= -->
+<div class="page" id="page-cal">
+  <h1>がんばりカレンダー 📅</h1>
+  <div class="date-sub">きもちスタンプで、がんばりを見える化</div>
+  <div class="card">
+    <div class="cal-head">
+      <button onclick="calMove(-1)">◀</button>
+      <b id="cal-title"></b>
+      <button onclick="calMove(1)">▶</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+  <div id="day-detail"></div>
+</div>
+
+<!-- ================= ケア ================= -->
+<div class="page" id="page-care">
+  <h1>2分だけ、じぶんケア 🫧</h1>
+  <div class="date-sub">赤ちゃんが安全なところにいるのを確認してからやってね</div>
+
+  <div class="card breath-wrap">
+    <h2 style="justify-content:center">🌬 ゆっくり深呼吸</h2>
+    <div class="breath-circle" id="breath-circle">スタート</div>
+    <div class="small" id="breath-hint">4秒すって・4秒とめて・6秒はく × 4回</div>
+    <div style="margin-top:12px"><button class="btn" id="breath-btn" onclick="toggleBreath()">はじめる</button></div>
+  </div>
+
+  <div class="card">
+    <h2>🌙 ねんねサウンド</h2>
+    <div class="small" style="margin-bottom:8px">赤ちゃんが安心するホワイトノイズ。タイマーで自動オフできるよ</div>
+    <div class="noise-grid" id="noise-grid"></div>
+    <div class="chip-row" id="noise-timer"></div>
+    <div class="small" id="noise-status" style="text-align:center;margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <h2>😤 イラッとしたら6秒カウント</h2>
+    <div class="small">怒りのピークは6秒。数えている間に少しおさまるよ</div>
+    <div class="anger-num" id="anger-num">6</div>
+    <div style="text-align:center"><button class="btn ghost" onclick="startAnger()">カウントスタート</button></div>
+  </div>
+
+  <div class="card">
+    <h2>🎁 ほめことばガチャ</h2>
+    <div class="gacha-msg" id="gacha-msg">ボタンを押すと、いまのあなたへのことばが出るよ</div>
+    <div style="text-align:center;margin-top:12px"><button class="btn" onclick="gacha()">ガチャをまわす</button></div>
+  </div>
+
+  <div class="card">
+    <h2>🧘‍♀️ 抱っこ疲れに 1分ストレッチ</h2>
+    <div class="guide-step"><span class="n">1</span>肩を耳につけるように上げて、ストンと落とす ×5回</div>
+    <div class="guide-step"><span class="n">2</span>両手を後ろで組んで、胸をひらいて10秒キープ</div>
+    <div class="guide-step"><span class="n">3</span>首をゆっくり左右に倒す 各10秒</div>
+    <div class="guide-step"><span class="n">4</span>手首をぶらぶら〜っと10秒（腱鞘炎予防）</div>
+  </div>
+</div>
+
+<!-- ================= 設定 ================= -->
+<div class="page" id="page-set">
+  <h1>設定 ⚙️</h1>
+  <div class="date-sub">あなた仕様にカスタマイズ</div>
+
+  <div class="card">
+    <h2>👩 プロフィール</h2>
+    <div class="set-row"><span class="lb">ママの呼び名</span><input type="text" id="set-name" placeholder="例：ゆかママ" onchange="saveSettings()"></div>
+    <div class="set-row"><span class="lb">赤ちゃんの誕生日</span><input type="date" id="set-baby" onchange="saveSettings()"></div>
+    <div class="small" style="margin-top:6px" id="baby-age"></div>
+  </div>
+
+  <div class="card">
+    <h2>🌟 「できたこと」を自分で追加</h2>
+    <div id="custom-list"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <input type="text" id="custom-input" placeholder="例：洗濯たたんだ">
+      <button class="btn" style="flex-shrink:0" onclick="addCustom()">追加</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📲 アプリとして使う方法</h2>
+    <div class="guide-step"><span class="n">iPhone</span>Safariで開く → 共有ボタン → 「ホーム画面に追加」</div>
+    <div class="guide-step"><span class="n">Android</span>Chromeで開く → メニュー → 「アプリをインストール」</div>
+    <div class="small">ホーム画面から開くと、アプリみたいに全画面で使えるよ</div>
+  </div>
+
+  <div class="card">
+    <h2>💾 データのバックアップ</h2>
+    <div class="small" style="margin-bottom:10px">記録はこのスマホの中だけに保存されます（外部送信なし）。機種変更のときはバックアップしてね</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" style="flex:1;text-align:center" onclick="backup()">保存する</button>
+      <button class="btn ghost" style="flex:1;text-align:center" onclick="document.getElementById('restore-file').click()">復元する</button>
+    </div>
+    <input type="file" id="restore-file" accept=".json" style="display:none" onchange="restore(this)">
+  </div>
+
+  <div class="card">
+    <div class="small">
+      ⚠️ このアプリの育児情報は一般的な目安です。医療的な判断はかならず医師・専門機関に相談してください。<br>
+      記録データはお使いの端末内（localStorage）のみに保存され、外部には送信されません。
+    </div>
+  </div>
+</div>
+
+<!-- ================= SOS sheet ================= -->
+<div class="sheet" id="sheet" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet-body" id="sheet-body"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ================= tab bar ================= -->
+<div class="tabbar"><div class="inner">
+  <button class="tab active" data-page="home" onclick="go('home')"><span class="ic">🏠</span>きょう</button>
+  <button class="tab" data-page="sos" onclick="go('sos')"><span class="ic">🆘</span>おたすけ</button>
+  <button class="tab" data-page="cal" onclick="go('cal')"><span class="ic">📅</span>カレンダー</button>
+  <button class="tab" data-page="care" onclick="go('care')"><span class="ic">🫧</span>ケア</button>
+  <button class="tab" data-page="set" onclick="go('set')"><span class="ic">⚙️</span>設定</button>
+</div></div>
+
+<script>
+/* =========================================================
+   ワンオペ育児おたすけ手帳
+   データはすべて localStorage（外部送信なし）
+========================================================= */
+const RAKUTEN_BANNER = "https://room.rakuten.co.jp/room_c68098b973/items"; // 空文字にするとバナー非表示
+
+const LS_KEY = "wanope-data";
+let db = load();
+function load(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {} }catch(e){ return {} }
+}
+db.days = db.days || {};          // "2026-07-08": {mood, checks:[], memo, log:[]}
+db.settings = db.settings || {};  // name, babyDate, customChecks:[]
+// 旧バージョン（生まれ月のみ）からの引き継ぎ：1日生まれとして仮設定
+if(db.settings.baby && !db.settings.babyDate){ db.settings.babyDate = db.settings.baby + "-01" }
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(db)) }
+
+const todayKey = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0") };
+function dayData(k){ if(!db.days[k]) db.days[k]={mood:null,checks:[],memo:""}; return db.days[k] }
+
+const MOODS = [
+  {emo:"😊",lbl:"げんき"},{emo:"🙂",lbl:"ふつう"},{emo:"😪",lbl:"ねむい"},
+  {emo:"😢",lbl:"つらい"},{emo:"🫠",lbl:"げんかい"}
+];
+const BASE_CHECKS = [
+  "ごはん（ミルク）あげた","おむつ かえた","抱っこして あやした",
+  "自分のごはんを食べた","5分でも 休めた","生きてる。それだけで100点"
+];
+const PRAISES = [
+  "きょうも赤ちゃんが生きてる。それはあなたが守ったから。",
+  "泣かれても、ちゃんとそばにいた。それがすごいこと。",
+  "手抜き＝工夫。ベビーフードも立派なごはん！",
+  "「ちゃんとできてない」と思うのは、ちゃんとやろうとしてる証拠。",
+  "誰も見てなくても、私は知ってるよ。あなた今日もえらかった。",
+  "寝不足でここまでやってるの、ほんとにすごい。",
+  "完璧なママより、笑ってるママでいい。",
+  "あなたが休むことも、赤ちゃんのためになるんだよ。",
+  "比べなくていい。あなたはこの子の唯一のママ。",
+  "今日できなかったことは、明日でいい。",
+];
+
+/* ---------- greeting / praise ---------- */
+function renderHome(){
+  const name = db.settings.name;
+  const h = new Date().getHours();
+  const g = h<5 ? "夜中までおつかれさま" : h<11 ? "おはよう" : h<18 ? "こんにちは" : "今日もおつかれさま";
+  document.getElementById("greet").textContent = `${g}、${name||"ママ"} 🌷`;
+  const d = new Date();
+  document.getElementById("today-str").textContent =
+    `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${"日月火水木金土"[d.getDay()]}）`;
+
+  // praise + streak
+  const idx = (d.getFullYear()*372 + d.getMonth()*31 + d.getDate()) % PRAISES.length;
+  document.getElementById("praise-banner").firstChild.textContent = PRAISES[idx];
+  let streak = 0, t = new Date();
+  while(true){
+    const k = t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
+    const rec = db.days[k];
+    const has = rec && (rec.mood!==null || (rec.checks&&rec.checks.length) || rec.memo || (rec.log&&rec.log.length));
+    if(has){ streak++; t.setDate(t.getDate()-1) } else break;
+  }
+  document.getElementById("streak-str").textContent = streak>1 ? `🔥 ${streak}日つづけて記録中！` : "きょうの記録をつけてみよう";
+
+  // mood
+  const day = dayData(todayKey());
+  const mrow = document.getElementById("mood-row");
+  mrow.innerHTML = "";
+  MOODS.forEach((m,i)=>{
+    const b = document.createElement("button");
+    b.className = "mood-btn"+(day.mood===i?" sel":"");
+    b.innerHTML = `<span class="emo">${m.emo}</span><span class="lbl">${m.lbl}</span>`;
+    b.onclick = ()=>{ day.mood = (day.mood===i?null:i); save(); renderHome(); if(day.mood===i && i>=3) toast("つらいときは「ケア」タブものぞいてみてね 🫧") };
+    mrow.appendChild(b);
+  });
+
+  // checks
+  const all = BASE_CHECKS.concat(db.settings.customChecks||[]);
+  const cl = document.getElementById("check-list");
+  cl.innerHTML = "";
+  all.forEach(txt=>{
+    const done = day.checks.includes(txt);
+    const el = document.createElement("div");
+    el.className = "chk"+(done?" done":"");
+    el.innerHTML = `<span class="box">${done?"✓":""}</span><span class="txt">${esc(txt)}</span>`;
+    el.onclick = ()=>{
+      if(done) day.checks = day.checks.filter(c=>c!==txt);
+      else { day.checks.push(txt); toast("えらい！ 🌸") }
+      save(); renderHome();
+    };
+    cl.appendChild(el);
+  });
+
+  document.getElementById("memo").value = day.memo || "";
+
+  // rakuten banner
+  const rk = document.getElementById("rk-banner");
+  if(RAKUTEN_BANNER){ rk.href = RAKUTEN_BANNER; rk.style.display = "block" }
+
+  renderLog();
+  renderBabyGuide();
+}
+function saveMemo(){
+  dayData(todayKey()).memo = document.getElementById("memo").value;
+  save(); toast("保存したよ 📝");
+}
+
+/* ---------- SOS ---------- */
+const SOS = [
+ {emo:"😭",ttl:"泣き止まない",sb:"チェック順で見てみよう",bg:"var(--pink-l)",
+  lead:"泣くのは赤ちゃんのおしゃべり。まずは順番にチェック！",
+  steps:[
+   ["おむつを見る","濡れてない？うんちしてない？"],
+   ["おなかすいてない？","前のミルク・授乳から2〜3時間たってる？"],
+   ["暑い・寒いをチェック","背中に手を入れて汗ばんでたら1枚脱がせる"],
+   ["げっぷが出てないかも","縦抱きで背中をトントン"],
+   ["環境を変えてみる","抱っこで別の部屋へ・ベランダで外気浴・ビニールのカシャカシャ音"],
+   ["ぜんぶダメでも大丈夫","理由なく泣き続ける時期（PURPLE crying）があるよ。あなたのせいじゃない"],
+  ],
+  ng:"<b>⚠️ 絶対にしないで：</b>激しく揺さぶること。限界のときは赤ちゃんを安全な場所（ベビーベッド等）に仰向けに置いて、2〜3分別室で深呼吸してOK。それは放置じゃなくて正しい対処だよ。",
+  yell:"泣き止まなくても、あなたはダメじゃない。泣ける＝元気な証拠でもあるよ 💗"},
+ {emo:"😴",ttl:"寝てくれない",sb:"ねんねのコツ",bg:"var(--lav)",
+  lead:"寝ないのはママのせいじゃなくて、赤ちゃんの仕様。コツを試してみよう。",
+  steps:[
+   ["部屋をしっかり暗く","豆電球も消す。常夜灯の光でも起きちゃう子がいるよ"],
+   ["室温をチェック","目安：冬20〜22℃・夏25〜27℃。大人が少し涼しいくらい"],
+   ["ねんねルーティンを固定","おふろ→授乳→絵本→暗い部屋、など毎日同じ流れに"],
+   ["トントンは心臓のリズムで","1秒に1回くらい、ゆっくり一定に"],
+   ["置くときはお尻から","頭から置くと背中スイッチが発動しやすい。密着したまま、お尻→背中→頭の順で"],
+   ["どうしても寝ないなら","一度あきらめて電気をつけて仕切り直すのもアリ。ママが焦ると伝わっちゃう"],
+  ],
+  ng:"<b>⚠️ 気をつけて：</b>寝かしつけのうつぶせ寝はNG（窒息リスク）。ソファでの添い寝も危険だよ。",
+  yell:"「寝ない子」を育ててるママは、それだけで毎日金メダル級 🥇"},
+ {emo:"🌆",ttl:"夕方ぐずぐず",sb:"黄昏泣き対策",bg:"var(--cream)",
+  lead:"夕方に理由なく泣くのは「黄昏泣き」。多くの子にあって、成長とともに消えるよ。",
+  steps:[
+   ["まず「仕様」だと知る","生後2週〜5ヶ月ごろに多い。原因不明でOK、対応の正解もなくてOK"],
+   ["抱っこ紐で家事してOK","おんぶ・抱っこしながら夕飯準備。泣き声が減らなくても密着で安心するよ"],
+   ["夕飯は手抜きが正解","この時期はレトルト・冷食・お惣菜をフル活用していい"],
+   ["音を変えてみる","換気扇の音・ドライヤー・胎内音アプリが効く子も"],
+   ["泣かせておく時間があってもいい","安全な場所なら、少し泣いててもらって自分の呼吸を整えて"],
+  ],
+  ng:"<b>⚠️ ムリしないで：</b>「泣き止ませなきゃ」と頑張りすぎるとママが消耗しちゃう。夕方は乗り切ればOKの時間帯。",
+  yell:"夕方を毎日乗り切ってるの、ほんとにすごいことだよ 🌇"},
+ {emo:"🛁",ttl:"ワンオペお風呂",sb:"段取りが9割",bg:"var(--sky)",
+  lead:"ワンオペお風呂は「入れる前の準備」で決まる！",
+  steps:[
+   ["先にぜんぶ準備","着替え・おむつ・保湿剤・タオルを脱衣所に広げてセット"],
+   ["赤ちゃんの待機場所を作る","脱衣所にバウンサーやマットを置いて、ママが洗う間はそこで待機"],
+   ["ママが先に洗う","ドアを開けて声をかけながら。泣いてても数分なら大丈夫"],
+   ["赤ちゃんを洗って一緒に湯船へ","湯温38〜39℃、湯船は2〜3分でOK"],
+   ["出たら赤ちゃんが先","タオルでくるんで待機場所へ→ママは秒で拭く→赤ちゃんの保湿・着替え"],
+   ["ママの保湿はあとまわしでOK","化粧水は赤ちゃんが落ち着いてからゆっくり"],
+  ],
+  ng:"<b>⚠️ 絶対にしないで：</b>浴室・湯船に赤ちゃんをひとりにすること（数cmの水でも溺れます）。迷ったらその日は沐浴やシャワーだけでもOK。",
+  yell:"毎日お風呂に入れなくても大丈夫。1日くらい拭くだけでも死なない！笑 🛁"},
+ {emo:"🍚",ttl:"ごはん食べない",sb:"離乳食イヤイヤ",bg:"var(--mint)",
+  lead:"食べないのはママの料理のせいじゃない。「食べムラ」はほぼ全員通る道。",
+  steps:[
+   ["ひとくちでも食べたら合格","完食を目指さない。栄養は数日単位でとれてればOK"],
+   ["ベビーフードに頼ってOK","市販BFは栄養計算済みの優秀ごはん。手作りより劣ってない"],
+   ["時間と場所を変えてみる","おなかすいたタイミングにずらす・テーブルの向きを変えるだけで食べることも"],
+   ["ママが食べて見せる","「おいしい〜！」と食べるマネを見せると興味を持つよ"],
+   ["遊び食べは切り上げてOK","10分食べなかったら「ごちそうさま」でおしまいにしていい"],
+  ],
+  ng:"<b>⚠️ 注意：</b>はちみつは1歳まで絶対NG（乳児ボツリヌス症）。無理やり口に入れるのは食事嫌いのもとになるよ。",
+  yell:"作ったのに食べてくれない悲しさ、わかる。でもその経験ぜんぶ、ムダじゃないよ 🍀"},
+ {emo:"🌡️",ttl:"熱が出た・様子が変",sb:"受診の目安",bg:"var(--pink-l)",
+  lead:"あわてなくて大丈夫。落ち着いてチェックしよう。",
+  steps:[
+   ["生後3ヶ月未満で38℃以上","→ 夜間でもすぐ受診！迷わず病院へ"],
+   ["ぐったり・顔色が悪い・水分とれない","→ 熱の高さに関係なく受診"],
+   ["けいれん・呼吸がおかしい・意識がない","→ すぐ119番"],
+   ["熱はあるけど機嫌よく飲めている","→ おうちで様子見OK。薄着にして水分をこまめに"],
+   ["判断に迷ったら #8000","小児科の看護師さん・医師が電話で教えてくれるよ（夜間・休日）"],
+  ],
+  ng:"<b>⚠️ メモしておくと安心：</b>熱が出た時間・体温・飲んだ量・おしっこの回数。受診のとき先生に伝えやすいよ。",
+  yell:"「心配しすぎかな？」で受診していい。それがママの仕事だから 🏥"},
+ {emo:"🫠",ttl:"ママが限界",sb:"まずこれ読んで",bg:"var(--lav)",
+  lead:"ここを開いたあなたへ。限界って気づけたこと自体が、すごく大事な一歩だよ。",
+  steps:[
+   ["まず赤ちゃんを安全な場所へ","ベビーベッドや床のマットに仰向けに。泣いてても数分は大丈夫"],
+   ["別の部屋で6秒深呼吸","「ケア」タブの深呼吸を使ってね。イライラのピークは必ず過ぎる"],
+   ["甘いもの・温かい飲みものを一口","血糖と体温が戻ると、気持ちも少し戻るよ"],
+   ["誰かに文字で吐き出す","夫・友だち・つぶやきノート。「つらい」って書くだけで軽くなる"],
+   ["今日はもう頑張らないと決める","家事ぜんぶ放棄OK。ごはんはレトルト、洗濯は明日"],
+   ["つらい日が2週間続いてたら","産後うつかも。自治体の保健師さんか産婦人科に電話してね。あなたが悪いんじゃなくて、ホルモンと疲労のせい"],
+  ],
+  ng:"<b>⚠️ 覚えておいて：</b>「ママのこころ よりそいホットライン 0120-279-338」は24時間無料。深夜でも話を聞いてくれる人がいるよ。",
+  yell:"逃げてもいい、泣いてもいい、頼っていい。あなたはもう十分やってる 💗"},
+ {emo:"🤝",ttl:"頼るのが苦手",sb:"頼り方テンプレ",bg:"var(--cream)",
+  lead:"「察してほしい」は伝わらない…！具体的にお願いするのがコツだよ。",
+  steps:[
+   ["夫への頼み方は「作業名＋時間」","×「手伝って」→ ○「19時からお風呂入れて。着替えは置いてある」"],
+   ["やり方の違いには目をつぶる","おむつが少しゆるくても死なない。任せたら口を出さないのが継続のコツ"],
+   ["実家・義実家には「モノ」を頼む","気をつかう相手には「おかず送って」「オムツ買って」が頼みやすい"],
+   ["一時保育は「ママの休憩」で使っていい","理由は「リフレッシュ」でOK。自治体の一時預かりは1時間数百円〜"],
+   ["ファミリー・サポートに登録だけでもしておく","使わなくても「いざとなったら頼れる」が心の保険になる"],
+   ["ネットスーパー・冷凍宅配は「外注」じゃなく「装備」","便利サービスを使うのは手抜きじゃなくて賢い采配"],
+  ],
+  ng:"<b>⚠️ これだけは：</b>「私がやったほうが早い」は積もると爆発します。下手でも任せて、育ててこう。",
+  yell:"頼れるママこそ、いちばん強いママだよ 💪"},
+];
+function renderSOS(){
+  const g = document.getElementById("sos-grid");
+  g.innerHTML = "";
+  SOS.forEach((s,i)=>{
+    const b = document.createElement("button");
+    b.className = "sos-card";
+    b.style.background = s.bg;
+    b.innerHTML = `<span class="emo">${s.emo}</span><span class="ttl">${s.ttl}</span><span class="sb">${s.sb}</span>`;
+    b.onclick = ()=>openSheet(i);
+    g.appendChild(b);
+  });
+}
+function openSheet(i){
+  const s = SOS[i];
+  const body = document.getElementById("sheet-body");
+  body.innerHTML = `
+    <div class="sheet-head"><span class="emo">${s.emo}</span><h3>${s.ttl}</h3>
+      <button class="sheet-close" onclick="closeSheet()">✕</button></div>
+    <div class="lead">${s.lead}</div>
+    ${s.steps.map((st,j)=>`
+      <div class="step" onclick="this.classList.toggle('done')">
+        <span class="num">${j+1}</span>
+        <div><b>${st[0]}</b><span>${st[1]}</span></div>
+      </div>`).join("")}
+    <div class="ngbox">${s.ng}</div>
+    <div class="yell">${s.yell}</div>`;
+  document.getElementById("sheet").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeSheet(){
+  document.getElementById("sheet").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+/* ---------- calendar ---------- */
+let calY, calM;
+function initCal(){ const d = new Date(); calY = d.getFullYear(); calM = d.getMonth() }
+function calMove(n){ calM += n; if(calM<0){calM=11;calY--} if(calM>11){calM=0;calY++} renderCal() }
+function renderCal(){
+  document.getElementById("cal-title").textContent = `${calY}年 ${calM+1}月`;
+  const g = document.getElementById("cal-grid");
+  g.innerHTML = "";
+  "日月火水木金土".split("").forEach(d=>{
+    const e = document.createElement("div"); e.className="dow"; e.textContent=d; g.appendChild(e);
+  });
+  const first = new Date(calY,calM,1).getDay();
+  const days = new Date(calY,calM+1,0).getDate();
+  const tk = todayKey();
+  for(let i=0;i<first;i++){ const e=document.createElement("div"); e.className="cal-cell empty"; g.appendChild(e) }
+  for(let d=1;d<=days;d++){
+    const k = calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    const rec = db.days[k];
+    const info = babyInfo(new Date(calY, calM, d));
+    const mile = info && info.mile;
+    const e = document.createElement("div");
+    e.className = "cal-cell"+(k===tk?" today":"")+(mile?" mile":"");
+    e.innerHTML = `<span>${d}</span><span class="memo">${mile?mile.emo:(rec&&rec.mood!==null&&rec.mood!==undefined?MOODS[rec.mood].emo:(rec&&(rec.checks.length||rec.memo||(rec.log&&rec.log.length))?"·":""))}</span>`;
+    e.onclick = ()=>showDay(k);
+    g.appendChild(e);
+  }
+  document.getElementById("day-detail").innerHTML = "";
+}
+function showDay(k){
+  const rec = db.days[k];
+  const el = document.getElementById("day-detail");
+  const [ky,km,kd] = k.split("-").map(Number);
+  const info = babyInfo(new Date(ky, km-1, kd));
+  const babyLine = info ? `<div style="font-size:13.5px;margin-bottom:6px">👶 生後${info.days}日目（${ageLabel(info.months)}）${info.mile?`<br><b style="color:var(--pink-d)">${info.mile.emo} ${info.mile.txt}</b>`:""}</div>` : "";
+  if(!rec || (rec.mood===null && !rec.checks.length && !rec.memo && !(rec.log&&rec.log.length))){
+    el.innerHTML = `<div class="card day-detail"><h2>${k.replace(/-/g,"/")}</h2>${babyLine}<div class="small">この日の記録はまだないよ</div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="card day-detail">
+    <h2>${k.replace(/-/g,"/")} の記録</h2>
+    ${babyLine}
+    ${rec.mood!==null&&rec.mood!==undefined?`<div style="font-size:15px;margin-bottom:6px">きもち：${MOODS[rec.mood].emo} ${MOODS[rec.mood].lbl}</div>`:""}
+    ${rec.log&&rec.log.length?`<div style="font-size:13.5px;margin-bottom:6px">🍼 お世話記録：${rec.log.length}回（${LOG_TYPES.map(t=>{const n=rec.log.filter(l=>l.type===t.id).length;return n?t.lbl+n:null}).filter(Boolean).join("・")}）</div>`:""}
+    ${rec.checks.length?`<div style="font-size:13.5px;margin-bottom:6px">🌟 できたこと：${rec.checks.length}個<br><span class="small">${rec.checks.map(esc).join(" ／ ")}</span></div>`:""}
+    ${rec.memo?`<div style="font-size:13.5px">📝 ${esc(rec.memo)}</div>`:""}
+  </div>`;
+}
+
+/* ---------- care ---------- */
+let breathTimer = null, breathStep = 0, breathCount = 0;
+const BREATH_SEQ = [["すって…",4000,"inhale"],["とめて",4000,"hold"],["はいて〜",6000,"exhale"]];
+function toggleBreath(){
+  const btn = document.getElementById("breath-btn");
+  if(breathTimer){ stopBreath(); return }
+  breathStep = 0; breathCount = 0;
+  btn.textContent = "やめる";
+  runBreath();
+}
+function runBreath(){
+  const c = document.getElementById("breath-circle");
+  const [label,ms,cls] = BREATH_SEQ[breathStep];
+  c.textContent = label;
+  c.className = "breath-circle "+cls;
+  c.style.transitionDuration = (ms/1000)+"s";
+  document.getElementById("breath-hint").textContent = `${breathCount+1} / 4 回目`;
+  breathTimer = setTimeout(()=>{
+    breathStep++;
+    if(breathStep >= BREATH_SEQ.length){ breathStep = 0; breathCount++ }
+    if(breathCount >= 4){ stopBreath(); document.getElementById("breath-circle").textContent = "おつかれさま 💗"; return }
+    runBreath();
+  }, ms);
+}
+function stopBreath(){
+  clearTimeout(breathTimer); breathTimer = null;
+  const c = document.getElementById("breath-circle");
+  c.className = "breath-circle"; c.style.transitionDuration = "1s"; c.textContent = "スタート";
+  document.getElementById("breath-btn").textContent = "はじめる";
+  document.getElementById("breath-hint").textContent = "4秒すって・4秒とめて・6秒はく × 4回";
+}
+let angerTimer = null;
+function startAnger(){
+  clearInterval(angerTimer);
+  let n = 6;
+  const el = document.getElementById("anger-num");
+  el.textContent = n;
+  angerTimer = setInterval(()=>{
+    n--;
+    if(n<=0){ el.textContent = "🌸"; clearInterval(angerTimer); toast("よくがまんできました。えらい！") }
+    else el.textContent = n;
+  },1000);
+}
+const GACHA = [
+  "🌸 あなたのおかげで、今日も赤ちゃんはあったかい。",
+  "☕ 5分だけ、なにもしない時間をとっていいんだよ。",
+  "🌈 うまくいかない日は、成長してる日。",
+  "💐 「ありがとう」を言われなくても、価値は減らない。",
+  "🫶 抱っこの数だけ、愛が伝わってる。",
+  "🌙 夜中に起きたあなたは、世界でいちばん頑張ってる。",
+  "🍀 だいじょうぶ。あなたの赤ちゃんは、あなたが大好き。",
+  "✨ 今のあなたに必要なのは、努力じゃなくて休憩かも。",
+  "🎀 ママが笑うと、赤ちゃんの世界が晴れる。",
+  "🌷 「まあいっか」は魔法のことば。",
+];
+function gacha(){
+  const el = document.getElementById("gacha-msg");
+  el.style.opacity = 0;
+  setTimeout(()=>{
+    el.textContent = GACHA[Math.floor(Math.random()*GACHA.length)];
+    el.style.transition = "opacity .4s"; el.style.opacity = 1;
+  },200);
+}
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  document.getElementById("set-name").value = db.settings.name || "";
+  document.getElementById("set-baby").value = db.settings.babyDate || "";
+  renderBabyAge();
+  const cl = document.getElementById("custom-list");
+  cl.innerHTML = "";
+  (db.settings.customChecks||[]).forEach((c,i)=>{
+    const e = document.createElement("div");
+    e.className = "custom-item";
+    e.innerHTML = `<button class="del" onclick="delCustom(${i})">✕</button><span style="font-size:13.5px">${esc(c)}</span>`;
+    cl.appendChild(e);
+  });
+  if(!(db.settings.customChecks||[]).length)
+    cl.innerHTML = `<div class="small">まだ追加はないよ。「ミルク作り置きした」など自由に追加してね</div>`;
+}
+function renderBabyAge(){
+  const el = document.getElementById("baby-age");
+  const info = babyInfo(new Date());
+  if(!info){ el.textContent = ""; return }
+  el.textContent = `👶 きょうで生後${info.days}日目（${ageLabel(info.months)}）だね`;
+}
+function saveSettings(){
+  db.settings.name = document.getElementById("set-name").value.trim();
+  db.settings.babyDate = document.getElementById("set-baby").value;
+  save(); renderBabyAge(); renderHome();
+}
+function addCustom(){
+  const v = document.getElementById("custom-input").value.trim();
+  if(!v) return;
+  db.settings.customChecks = db.settings.customChecks || [];
+  if(db.settings.customChecks.length >= 10){ toast("追加は10個までだよ"); return }
+  db.settings.customChecks.push(v);
+  document.getElementById("custom-input").value = "";
+  save(); renderSettings(); renderHome(); toast("追加したよ 🌟");
+}
+function delCustom(i){
+  db.settings.customChecks.splice(i,1);
+  save(); renderSettings(); renderHome();
+}
+function backup(){
+  const blob = new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "wanope-techo-backup.json";
+  a.click();
+  toast("バックアップを保存したよ 💾");
+}
+function restore(input){
+  const f = input.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ()=>{
+    try{
+      const d = JSON.parse(r.result);
+      if(!d.days && !d.settings) throw 0;
+      db = d; db.days = db.days||{}; db.settings = db.settings||{};
+      save(); renderHome(); renderSettings(); renderCal();
+      toast("復元できたよ ✨");
+    }catch(e){ toast("ファイルを読み込めなかった…") }
+  };
+  r.readAsText(f);
+  input.value = "";
+}
+
+/* ---------- baby log ---------- */
+const LOG_TYPES = [
+  {id:"breast",emo:"🤱",lbl:"授乳"},
+  {id:"milk",emo:"🍼",lbl:"ミルク"},
+  {id:"diaper",emo:"🧷",lbl:"おむつ"},
+  {id:"sleep",emo:"😴",lbl:"ねんね"},
+];
+function renderLog(){
+  const day = dayData(todayKey()); day.log = day.log || [];
+  const g = document.getElementById("log-grid");
+  g.innerHTML = "";
+  LOG_TYPES.forEach(t=>{
+    const items = day.log.filter(l=>l.type===t.id);
+    const last = items.length ? items[items.length-1].t : null;
+    const b = document.createElement("button");
+    b.className = "log-btn";
+    b.innerHTML = `<span class="emo">${t.emo}</span><span class="lbl">${t.lbl}</span><span class="cnt">${items.length?items.length+"回 "+last:"まだ"}</span>`;
+    b.onclick = ()=>{
+      const d = new Date();
+      day.log.push({type:t.id, t:String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")});
+      save(); renderLog(); toast(t.lbl+" を記録したよ "+t.emo);
+    };
+    g.appendChild(b);
+  });
+  const list = document.getElementById("log-list");
+  list.innerHTML = "";
+  day.log.slice().reverse().forEach((l,ri)=>{
+    const i = day.log.length-1-ri;
+    const t = LOG_TYPES.find(x=>x.id===l.type) || {emo:"·",lbl:l.type};
+    const e = document.createElement("div");
+    e.className = "log-item";
+    e.innerHTML = `<span>${t.emo}</span><span>${t.lbl}</span><span class="small">${l.t}</span><button class="del">✕</button>`;
+    e.querySelector(".del").onclick = ()=>{ day.log.splice(i,1); save(); renderLog() };
+    list.appendChild(e);
+  });
+}
+
+/* ---------- baby guide ---------- */
+const BABY_GUIDE = {
+  0:["ねんねと授乳の繰り返しでOK","昼夜の区別はまだない時期。3時間おきの授乳でママはヘトヘト","ママの体も回復途中。家事はぜんぶ後回しでいい"],
+  1:["起きている時間が少しずつ増える","「泣きのピーク」は生後1〜2ヶ月。理由なく泣くのは仕様だよ","泣き止まなくても、あなたのせいじゃない"],
+  2:["あやすと笑う「社会的微笑」が出てくる","夕方のぐずり（黄昏泣き）が始まる子も","はじめての笑顔は、あなたのがんばりの証"],
+  3:["首がすわりはじめる","指しゃぶり・こぶししゃぶりは成長のサイン","生活リズムが少しずつできてくる頃"],
+  4:["声を出して笑うように","寝返りの練習が始まる子も。目を離すときは床が安心","昼寝のリズムがつくと少しラクになるよ"],
+  5:["寝返り成功の子が増えてくる","そろそろ離乳食の準備。焦らなくて大丈夫","夜泣きが始まる子も。それも仕様です！"],
+  6:["離乳食スタートの目安の時期","人見知りは愛着が育った証拠","半年間おつかれさま。もう十分ベテランだよ"],
+  7:["おすわりが安定してくる","夜泣きのピークの子も。添い寝・抱っこでしのいでOK","「食べない」は普通。ひとくちで合格"],
+  8:["ずりばい・はいはいの練習","後追いが始まるとトイレも大変…おんぶ活用！","動き出したら床の小物チェック（誤飲対策）"],
+  9:["はいはい・つかまり立ちの子も","離乳食が3回になると1日があっという間","手抜き離乳食もベビーフードも、ぜんぶ正解"],
+  10:["「ばいばい」「ぱちぱち」のマネっこ","つたい歩きで目が離せない時期","1日終わったら自分を褒めてあげてね"],
+  11:["初めての言葉が出る子も","歩く子も、まだの子も、どっちも正常","もうすぐ1歳。ここまで育てたのはあなただよ"],
+  12:["1歳おめでとう！","歩きはじめ・卒乳など変化の多い時期","1年間やってきたの、ほんとうにすごいこと"],
+};
+/* 誕生日から「生後◯日目・◯ヶ月・記念日」を計算
+   生まれた日を1日目と数える（100日祝いの数え方に合わせる） */
+function babyBirth(){
+  const b = db.settings.babyDate;
+  if(!b) return null;
+  const [y,m,d] = b.split("-").map(Number);
+  return new Date(y, m-1, d);
+}
+function babyInfo(date){
+  const bd = babyBirth();
+  if(!bd) return null;
+  const day0 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const days = Math.round((day0 - bd) / 86400000) + 1;
+  if(days < 1) return null;
+  // 満◯ヶ月（誕生日の「日」が存在しない月は月末を記念日とみなす）
+  const lastDay = new Date(day0.getFullYear(), day0.getMonth()+1, 0).getDate();
+  const annivDay = Math.min(bd.getDate(), lastDay);
+  let months = (day0.getFullYear()-bd.getFullYear())*12 + (day0.getMonth()-bd.getMonth());
+  if(day0.getDate() < annivDay) months--;
+  if(months < 0) months = 0;
+  const isAnniv = day0.getDate() === annivDay && months >= 1;
+  let mile = null;
+  if(days === 7) mile = {emo:"🎀", txt:"お七夜（生後7日目）"};
+  else if(days === 100) mile = {emo:"🎉", txt:"今日で100日！（お食い初めの目安だよ）"};
+  else if(isAnniv){
+    if(months === 6) mile = {emo:"🎂", txt:"ハーフバースデー！（6ヶ月）"};
+    else if(months % 12 === 0) mile = {emo:"🎂", txt:`${months/12}歳のおたんじょうび！おめでとう！`};
+    else if(months < 12) mile = {emo:"🎈", txt:`今日で${months}ヶ月！`};
+    else mile = {emo:"🎈", txt:`今日で${Math.floor(months/12)}歳${months%12}ヶ月`};
+  }
+  return {days, months, mile};
+}
+function ageLabel(months){
+  return months < 24 ? `${months}ヶ月` : `${Math.floor(months/12)}歳${months%12}ヶ月`;
+}
+function renderBabyGuide(){
+  const el = document.getElementById("baby-guide");
+  const info = babyInfo(new Date());
+  if(!info){ el.style.display = "none"; return }
+  const months = info.months;
+  let g;
+  if(months<=12) g = BABY_GUIDE[months];
+  else if(months<24) g = ["自我がぐんぐん芽生えてくる時期","歩く・登る・ぜんぶ触る！おうちの安全対策を","イヤイヤは成長の証。ママのせいじゃないよ"];
+  else g = ["おしゃべりと自己主張がどんどん増える","イヤイヤ期は「自分でやりたい」の裏返し","毎日つきあってるあなた、ほんとうにえらい"];
+  el.style.display = "block";
+  el.innerHTML = `<h2>👶 いまの赤ちゃん（生後${info.days}日目・${ageLabel(months)}）</h2>
+    ${info.mile?`<div class="guide-line" style="font-weight:700">${info.mile.emo} ${info.mile.txt}</div>`:""}
+    <div class="guide-line"><b>できること目安：</b>${g[0]}</div>
+    <div class="guide-line"><b>あるあるな悩み：</b>${g[1]}</div>
+    <div class="guide-line"><b>ママへ：</b>${g[2]}</div>`;
+}
+
+/* ---------- お願いテンプレ ---------- */
+const TPLS = [
+  ["夫へ｜お風呂をお願い","今日19時にお風呂お願い！着替えとタオルは脱衣所にセットしてあるよ。出たら保湿クリームだけ塗ってくれると助かる🙏"],
+  ["夫へ｜夜のミルクを1回交代","今夜2時ごろのミルク、1回お願いできる？作り方はキッチンにメモ貼ってあるよ。1回続けて寝られるだけでだいぶ回復します😴"],
+  ["夫へ｜休日に2時間だけ","土曜の10時〜12時、赤ちゃんお願いしたい！私は美容院＆ひとり時間もらうね。困ったら電話して👌"],
+  ["実家へ｜おかずをお願い","もし余裕あったら、冷凍できるおかず送ってもらえるとすごく助かる…！最近ごはん作る余裕がなくて🙏"],
+  ["友だちへ｜弱音を聞いて","ちょっとだけ聞いてもらっていい？最近ワンオペしんどくて…。返信いつでもいいから、吐き出させて😢"],
+  ["一時保育へ｜問い合わせ","一時保育の利用を検討しています。空き状況と必要な手続きを教えていただけますか？子どもは生後◯ヶ月です。（◯は書き換えてね）"],
+];
+function renderTpls(){
+  const el = document.getElementById("tpl-list");
+  el.innerHTML = "";
+  TPLS.forEach(t=>{
+    const d = document.createElement("div");
+    d.className = "tpl";
+    d.innerHTML = `<div class="to">${t[0]}</div><p>${esc(t[1])}</p><button class="btn ghost" style="padding:7px 18px;font-size:12.5px">コピーする</button>`;
+    d.querySelector("button").onclick = ()=>copyText(t[1]);
+    el.appendChild(d);
+  });
+}
+function copyText(s){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(s).then(()=>toast("コピーしたよ 📋"), ()=>fallbackCopy(s));
+  } else fallbackCopy(s);
+}
+function fallbackCopy(s){
+  const ta = document.createElement("textarea");
+  ta.value = s; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast("コピーしたよ 📋") }
+  catch(e){ toast("コピーできなかった…長押しで選択してね") }
+  document.body.removeChild(ta);
+}
+
+/* ---------- ねんねサウンド ---------- */
+const NOISES = [
+  {id:"shh",emo:"🤫",lbl:"シー"},
+  {id:"rain",emo:"🌧️",lbl:"あめ"},
+  {id:"wave",emo:"🌊",lbl:"なみ"},
+  {id:"womb",emo:"🫶",lbl:"たいない"},
+];
+const NOISE_TIMES = [["15分",15],["30分",30],["60分",60],["切らない",0]];
+let audioCtx=null, noiseNodes=null, noiseCur=null, noiseTimeout=null, noiseTimerMin=15;
+function makeNoiseBuffer(ctx){
+  const len = ctx.sampleRate*2;
+  const buf = ctx.createBuffer(1,len,ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i] = Math.random()*2-1;
+  return buf;
+}
+function playNoise(id){
+  const wasPlaying = (noiseCur===id);
+  stopNoise(false);
+  if(wasPlaying) return;
+  audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==="suspended") audioCtx.resume();
+  const src = audioCtx.createBufferSource();
+  src.buffer = makeNoiseBuffer(audioCtx); src.loop = true;
+  const gain = audioCtx.createGain();
+  let node = src, lfo = null;
+  const f = audioCtx.createBiquadFilter();
+  if(id==="shh"){ f.type="bandpass"; f.frequency.value=1200; f.Q.value=0.6; gain.gain.value=0.35 }
+  if(id==="rain"){ f.type="lowpass"; f.frequency.value=600; gain.gain.value=0.4 }
+  if(id==="wave"){ f.type="lowpass"; f.frequency.value=400; gain.gain.value=0.25;
+    lfo = audioCtx.createOscillator(); lfo.frequency.value=0.14;
+    const lg = audioCtx.createGain(); lg.gain.value=0.16;
+    lfo.connect(lg); lg.connect(gain.gain); lfo.start();
+  }
+  if(id==="womb"){ f.type="lowpass"; f.frequency.value=180; gain.gain.value=0.55;
+    lfo = audioCtx.createOscillator(); lfo.frequency.value=1.1;
+    const lg = audioCtx.createGain(); lg.gain.value=0.22;
+    lfo.connect(lg); lg.connect(gain.gain); lfo.start();
+  }
+  node.connect(f); f.connect(gain); gain.connect(audioCtx.destination);
+  src.start();
+  noiseNodes = {src, lfo};
+  noiseCur = id;
+  if(noiseTimerMin>0) noiseTimeout = setTimeout(()=>stopNoise(true), noiseTimerMin*60*1000);
+  renderNoiseUI();
+}
+function stopNoise(byTimer){
+  clearTimeout(noiseTimeout); noiseTimeout = null;
+  if(noiseNodes){
+    try{ noiseNodes.src.stop() }catch(e){}
+    if(noiseNodes.lfo) try{ noiseNodes.lfo.stop() }catch(e){}
+    noiseNodes = null;
+  }
+  const prev = noiseCur; noiseCur = null;
+  if(byTimer && prev) toast("タイマーで音を止めたよ 🌙");
+  renderNoiseUI();
+}
+function renderNoiseUI(){
+  const g = document.getElementById("noise-grid");
+  g.innerHTML = "";
+  NOISES.forEach(n=>{
+    const b = document.createElement("button");
+    b.className = "noise-btn"+(noiseCur===n.id?" on":"");
+    b.innerHTML = `<span class="emo">${n.emo}</span><span class="lbl">${n.lbl}</span>`;
+    b.onclick = ()=>playNoise(n.id);
+    g.appendChild(b);
+  });
+  const t = document.getElementById("noise-timer");
+  t.innerHTML = "";
+  NOISE_TIMES.forEach(([lbl,min])=>{
+    const c = document.createElement("button");
+    c.className = "chip"+(noiseTimerMin===min?" on":"");
+    c.textContent = lbl;
+    c.onclick = ()=>{
+      noiseTimerMin = min;
+      if(noiseCur){
+        clearTimeout(noiseTimeout); noiseTimeout = null;
+        if(min>0) noiseTimeout = setTimeout(()=>stopNoise(true), min*60*1000);
+      }
+      renderNoiseUI();
+    };
+    t.appendChild(c);
+  });
+  const s = document.getElementById("noise-status");
+  if(noiseCur){
+    const n = NOISES.find(x=>x.id===noiseCur);
+    s.textContent = `♪ ${n.lbl} を再生中${noiseTimerMin>0?`（${noiseTimerMin}分で自動オフ）`:""}。ほかの画面に移っても鳴り続けるよ`;
+  } else s.textContent = "";
+}
+
+/* ---------- がんばりカード画像 ---------- */
+function shareImage(){
+  const day = dayData(todayKey());
+  const cv = document.createElement("canvas");
+  cv.width = 1080; cv.height = 1080;
+  const x = cv.getContext("2d");
+  const gr = x.createLinearGradient(0,0,1080,1080);
+  gr.addColorStop(0,"#ffe3ea"); gr.addColorStop(1,"#e6e0f8");
+  x.fillStyle = gr; x.fillRect(0,0,1080,1080);
+  roundRect(x,70,120,940,840,48);
+  x.fillStyle = "rgba(255,255,255,.93)"; x.fill();
+  x.textAlign = "center";
+  const d = new Date();
+  x.fillStyle = "#a08a94";
+  x.font = "500 40px 'Zen Maru Gothic',sans-serif";
+  x.fillText(`${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}`, 540, 220);
+  x.font = "130px sans-serif";
+  x.fillText(day.mood!==null&&day.mood!==undefined ? MOODS[day.mood].emo : "🌷", 540, 400);
+  x.fillStyle = "#5a4a52";
+  x.font = "700 62px 'Zen Maru Gothic',sans-serif";
+  x.fillText(`きょう できたこと ${day.checks.length}個`, 540, 520);
+  x.fillStyle = "#a08a94";
+  x.font = "500 38px 'Zen Maru Gothic',sans-serif";
+  const idx = (d.getFullYear()*372 + d.getMonth()*31 + d.getDate()) % PRAISES.length;
+  wrapText(x, PRAISES[idx], 540, 615, 780, 58);
+  x.fillStyle = "#ff8fab";
+  x.font = "700 44px 'Zen Maru Gothic',sans-serif";
+  x.fillText("がんばったよ、今日も。", 540, 850);
+  x.fillStyle = "#c9b3bd";
+  x.font = "500 28px 'Zen Maru Gothic',sans-serif";
+  x.fillText("― ワンオペ育児おたすけ手帳 ―", 540, 1005);
+  cv.toBlob(async blob=>{
+    const file = new File([blob],"ganbari-card.png",{type:"image/png"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file], title:"きょうのがんばり"}); return }catch(e){}
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ganbari-card.png";
+    a.click();
+    toast("画像を保存したよ 📤");
+  });
+}
+function roundRect(x,px,py,w,h,r){
+  x.beginPath(); x.moveTo(px+r,py);
+  x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r);
+  x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath();
+}
+function wrapText(x,text,cx,y,maxW,lh){
+  let line = "";
+  for(const ch of text){
+    if(x.measureText(line+ch).width > maxW){ x.fillText(line,cx,y); y += lh; line = ch }
+    else line += ch;
+  }
+  if(line) x.fillText(line,cx,y);
+}
+
+/* ---------- common ---------- */
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])) }
+function go(p){
+  document.querySelectorAll(".page").forEach(e=>e.classList.remove("active"));
+  document.getElementById("page-"+p).classList.add("active");
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.page===p));
+  if(p==="home") renderHome();
+  if(p==="cal") renderCal();
+  if(p==="set") renderSettings();
+  if(p!=="care" && breathTimer) stopBreath();
+  window.scrollTo(0,0);
+}
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove("show"),2200);
+}
+
+initCal();
+renderHome();
+renderSOS();
+renderSettings();
+renderTpls();
+renderNoiseUI();
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>

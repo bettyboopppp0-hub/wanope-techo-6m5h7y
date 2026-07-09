@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ワンオペ育児おたすけ手帳｜泣き止まない夜に、もうひとりで悩まない</title>
+<meta name="description" content="泣き止まない・寝ない・ママ限界…その「いま」に効く対処法カード＋ママのこころ記録。新米ママのためのお守りアプリ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff7f9; --pink:#ffb7c9; --pink-d:#ff8fab; --pink-l:#ffe3ea;
+  --lav:#e6e0f8; --mint:#dcf2e7; --cream:#fff3d9; --sky:#ddeefc;
+  --text:#5a4a52; --sub:#a08a94; --line:#f3e2e8;
+  --shadow:0 6px 24px rgba(255,143,171,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Zen Maru Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.9;font-size:15px;overflow-x:hidden}
+img{max-width:100%}
+section{padding:56px 20px;max-width:640px;margin:0 auto}
+h2{font-size:22px;font-weight:900;text-align:center;margin-bottom:8px;line-height:1.5}
+.sec-sub{text-align:center;font-size:13px;color:var(--sub);margin-bottom:28px}
+.accent{color:var(--pink-d)}
+/* reveal */
+.rv{opacity:0;transform:translateY(24px);transition:all .7s ease}
+.rv.on{opacity:1;transform:none}
+/* ---- hero ---- */
+.hero{
+  background:linear-gradient(160deg,#ffe3ea 0%,#fff7f9 45%,#e6e0f8 100%);
+  text-align:center;padding:64px 20px 52px;position:relative;overflow:hidden;
+}
+.hero .badge{display:inline-block;background:#fff;color:var(--pink-d);font-weight:700;font-size:12px;border-radius:999px;padding:6px 16px;box-shadow:var(--shadow);margin-bottom:18px}
+.hero h1{font-size:28px;font-weight:900;line-height:1.6;margin-bottom:14px}
+.hero .lead{font-size:14.5px;color:var(--sub);margin-bottom:26px}
+.phone{
+  width:230px;margin:0 auto 26px;background:#fff;border-radius:36px;padding:12px 10px;
+  box-shadow:0 20px 50px rgba(255,143,171,.3);
+}
+.phone .scr{background:var(--bg);border-radius:26px;padding:16px 12px;text-align:left}
+.scr .pr-line{background:linear-gradient(135deg,#ffe3ea,#e6e0f8);border-radius:14px;padding:10px 12px;font-size:11px;font-weight:700;margin-bottom:10px}
+.scr .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.scr .mini{border-radius:12px;padding:8px;font-size:10px;font-weight:700}
+.scr .mini span{font-size:16px;display:block}
+.float-emo{position:absolute;font-size:34px;opacity:.5;animation:float 5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.cta{
+  display:inline-block;background:var(--pink-d);color:#fff;font-weight:900;font-size:16px;
+  border-radius:999px;padding:16px 42px;text-decoration:none;
+  box-shadow:0 8px 24px rgba(255,143,171,.45);transition:transform .2s;
+}
+.cta:active{transform:scale(.96)}
+.cta-note{font-size:11.5px;color:var(--sub);margin-top:10px}
+/* ---- 悩み ---- */
+.nayami{background:#fff}
+.nayami-list{max-width:480px;margin:0 auto}
+.nayami-item{display:flex;gap:10px;align-items:flex-start;background:var(--bg);border-radius:16px;padding:13px 16px;margin-bottom:10px;font-size:14px;font-weight:500}
+.nayami-item::before{content:"✔";color:var(--pink-d);font-weight:900;flex-shrink:0}
+.nayami-close{text-align:center;font-weight:900;font-size:17px;margin-top:26px;line-height:1.8}
+/* ---- 機能 ---- */
+.feat-card{background:#fff;border-radius:24px;padding:24px 20px;margin-bottom:18px;box-shadow:var(--shadow);display:flex;gap:16px;align-items:flex-start}
+.feat-card .ic{font-size:34px;flex-shrink:0;width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.feat-card h3{font-size:16px;font-weight:900;margin-bottom:4px}
+.feat-card p{font-size:13.5px;color:var(--sub)}
+/* ---- steps ---- */
+.step-row{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.step-row .n{background:var(--pink-d);color:#fff;font-weight:900;border-radius:999px;min-width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-row b{display:block;font-size:15px}
+.step-row span{font-size:13px;color:var(--sub)}
+/* ---- voice ---- */
+.voice{background:#fff}
+.voice-card{background:var(--bg);border-radius:20px;padding:18px 20px;margin-bottom:14px}
+.voice-card .who{font-size:12px;color:var(--sub);font-weight:700;margin-bottom:4px}
+.voice-card p{font-size:13.5px}
+.stars{color:#f5b642;font-size:13px}
+/* ---- price ---- */
+.price-box{
+  background:linear-gradient(135deg,#fff,#fff7f9);border:3px solid var(--pink);
+  border-radius:28px;padding:30px 24px;text-align:center;box-shadow:var(--shadow);position:relative;
+}
+.price-box .tag{position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:var(--pink-d);color:#fff;font-weight:900;font-size:12.5px;border-radius:999px;padding:6px 20px;white-space:nowrap}
+.price-num{font-size:40px;font-weight:900;color:var(--pink-d)}
+.price-num small{font-size:15px;color:var(--text)}
+.price-was{text-decoration:line-through;color:var(--sub);font-size:14px}
+.price-inc{text-align:left;max-width:340px;margin:16px auto 20px;font-size:13.5px}
+.price-inc div{padding:5px 0;border-bottom:1px dashed var(--line)}
+.price-inc div::before{content:"🎁 "}
+/* ---- faq ---- */
+details{background:#fff;border-radius:16px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden}
+summary{padding:16px 18px;font-weight:700;font-size:14px;cursor:pointer;list-style:none;display:flex;gap:8px}
+summary::before{content:"Q.";color:var(--pink-d);font-weight:900}
+details p{padding:0 18px 16px 42px;font-size:13.5px;color:var(--sub)}
+/* ---- footer ---- */
+footer{text-align:center;padding:40px 20px 60px;font-size:11.5px;color:var(--sub)}
+.last-cta{background:linear-gradient(160deg,#e6e0f8,#ffe3ea);text-align:center;border-radius:0}
+.last-cta h2{margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<!-- ======== HERO ======== -->
+<div class="hero">
+  <span class="float-emo" style="top:8%;left:8%">🍼</span>
+  <span class="float-emo" style="top:14%;right:10%;animation-delay:1.2s">🌙</span>
+  <span class="float-emo" style="bottom:12%;left:12%;animation-delay:2.4s">💗</span>
+  <div class="badge">＼ 新米ママ1年生のためのお守りアプリ ／</div>
+  <h1>泣き止まない夜に、<br>もう<span class="accent">ひとりで悩まない</span>。</h1>
+  <div class="lead">泣き止まない・寝ない・ママ限界……<br>その「いま」に効く対処法が、3秒でひらく。</div>
+  <div class="phone">
+    <div class="scr">
+      <div class="pr-line">きょうも、ここをひらいた。それだけで えらい。</div>
+      <div class="mini-grid">
+        <div class="mini" style="background:var(--pink-l)"><span>😭</span>泣き止まない</div>
+        <div class="mini" style="background:var(--lav)"><span>😴</span>寝てくれない</div>
+        <div class="mini" style="background:var(--sky)"><span>🛁</span>ワンオペお風呂</div>
+        <div class="mini" style="background:var(--cream)"><span>🫠</span>ママが限界</div>
+      </div>
+    </div>
+  </div>
+  <a class="cta" href="#price">今すぐ手に入れる</a>
+  <div class="cta-note">インストール不要・スマホのホーム画面に追加するだけ</div>
+</div>
+
+<!-- ======== 悩み共感 ======== -->
+<section class="nayami">
+  <h2 class="rv">こんな夜、<br>ありませんか？</h2>
+  <div class="sec-sub rv">ひとつでも当てはまったら、読み進めてみて</div>
+  <div class="nayami-list">
+    <div class="nayami-item rv">何をしても泣き止まなくて、一緒に泣きそうになる</div>
+    <div class="nayami-item rv">検索魔になって、スマホの情報に振り回されて余計不安</div>
+    <div class="nayami-item rv">ワンオペお風呂、毎日ヒヤヒヤしながら入れてる</div>
+    <div class="nayami-item rv">夫に「手伝おうか？」と言われるたびにモヤッとする</div>
+    <div class="nayami-item rv">イライラして、あとで自己嫌悪。この繰り返し</div>
+    <div class="nayami-item rv">「私、ママ向いてないのかな」って思ったことがある</div>
+  </div>
+  <div class="nayami-close rv">
+    それ、あなたのせいじゃなくて<br><span class="accent">「情報とお守り」が足りてない</span>だけ。
+  </div>
+</section>
+
+<!-- ======== 機能 ======== -->
+<section>
+  <h2 class="rv">このアプリが、<br>あなたの<span class="accent">「もうひとりの味方」</span>に</h2>
+  <div class="sec-sub rv">ワンオペ育児おたすけ手帳の6つの機能</div>
+
+  <div class="feat-card rv">
+    <div class="ic" style="background:var(--pink-l)">🆘</div>
+    <div><h3>困った「いま」に効く おたすけカード</h3>
+    <p>泣き止まない・寝ない・発熱・ワンオペお風呂・ママ限界…8つの場面別に、順番にやるだけの対処ステップ。#8000などの相談先もワンタップ発信。</p></div>
+  </div>
+  <div class="feat-card rv">
+    <div class="ic" style="background:var(--lav)">💗</div>
+    <div><h3>ママのこころ記録</h3>
+    <p>きもちスタンプ＋「できたことチェック」＋誰にも見られないつぶやきノート。毎日ちがう褒めことばがあなたを迎えます。</p></div>
+  </div>
+  <div class="feat-card rv">
+    <div class="ic" style="background:var(--mint)">🫧</div>
+    <div><h3>2分でできる じぶんケア</h3>
+    <p>画面と一緒にゆっくり深呼吸・イライラ6秒カウント・ほめことばガチャ。限界になる前の「ひと呼吸」を助けます。</p></div>
+  </div>
+  <div class="feat-card rv">
+    <div class="ic" style="background:var(--sky)">📅</div>
+    <div><h3>がんばりカレンダー</h3>
+    <p>きもちスタンプで1ヶ月を見える化。「私、ちゃんとやれてるじゃん」が目に見えるから、自己肯定感が積み上がる。</p></div>
+  </div>
+  <div class="feat-card rv">
+    <div class="ic" style="background:var(--cream)">🍼</div>
+    <div><h3>ワンタップ赤ちゃんきろく</h3>
+    <p>授乳・ミルク・おむつ・ねんねをタップだけで記録。「前回いつだっけ？」が寝ぼけた頭でもすぐわかる。月齢に合わせた「いまの赤ちゃんガイド」つき。</p></div>
+  </div>
+  <div class="feat-card rv">
+    <div class="ic" style="background:var(--pink-l)">🌙</div>
+    <div><h3>ねんねサウンド＆共有カード</h3>
+    <p>赤ちゃんが安心するホワイトノイズ4種（自動オフタイマー付き）。がんばった日は、かわいいカード画像にしてSNSや夫に共有。</p></div>
+  </div>
+</section>
+
+<!-- ======== 使い方 ======== -->
+<section style="background:#fff;max-width:100%"><div style="max-width:640px;margin:0 auto">
+  <h2 class="rv">使い方は<span class="accent">3ステップ</span>、30秒</h2>
+  <div class="sec-sub rv">アプリストア不要。届いたURLを開くだけ</div>
+  <div class="step-row rv"><span class="n">1</span><div><b>URLをスマホで開く</b><span>iPhoneはSafari、AndroidはChromeでOK</span></div></div>
+  <div class="step-row rv"><span class="n">2</span><div><b>「ホーム画面に追加」する</b><span>アプリみたいにワンタップで起動できるようになる</span></div></div>
+  <div class="step-row rv"><span class="n">3</span><div><b>困ったとき・寝る前にひらく</b><span>記録はスマホの中だけ。登録不要・外部送信なしで安心</span></div></div>
+</div></section>
+
+<!-- ======== 声 ======== -->
+<section class="voice" style="background:transparent">
+  <h2 class="rv">使ったママたちの声</h2>
+  <div class="sec-sub rv">※個人の感想です</div>
+  <div class="voice-card rv">
+    <div class="who">生後3ヶ月ママ（29歳）<span class="stars"> ★★★★★</span></div>
+    <p>夜中に泣き止まなくてパニックになりかけたとき、カードの通りに順番にチェックしたら落ち着けた。「あなたのせいじゃない」の一言で泣いた…。</p>
+  </div>
+  <div class="voice-card rv">
+    <div class="who">生後7ヶ月ママ（34歳）<span class="stars"> ★★★★★</span></div>
+    <p>ワンオペお風呂の段取りが神。準備リストの通りにやったら、初めて焦らず入れられました。夫にも「これ見て」と共有してます。</p>
+  </div>
+  <div class="voice-card rv">
+    <div class="who">生後5ヶ月ママ（31歳）<span class="stars"> ★★★★☆</span></div>
+    <p>できたことチェックで「生きてる。それだけで100点」にチェックつけるだけの日もあるけど、それでいいんだって思えるようになった。</p>
+  </div>
+</section>
+
+<!-- ======== 価格 ======== -->
+<section id="price">
+  <h2 class="rv">育児書1冊より、<br>やさしい価格で</h2>
+  <div class="sec-sub rv">一度買えば、ずっと使える買い切り型</div>
+  <div class="price-box rv">
+    <div class="tag">🎉 リリース記念価格</div>
+    <div class="price-was">通常価格 1,480円</div>
+    <div class="price-num">980<small>円（買い切り）</small></div>
+    <div class="price-inc">
+      <div>場面別おたすけカード 8種（40ステップ以上）</div>
+      <div>ママのこころ記録＋がんばりカレンダー</div>
+      <div>深呼吸・6秒カウントなどのセルフケア機能</div>
+      <div>授乳・おむつのワンタップ記録＋月齢ガイド</div>
+      <div>ねんねサウンド（ホワイトノイズ4種）</div>
+      <div>そのまま送れる「お願いテンプレ」6種</div>
+      <div>今後のアップデートも追加料金なし</div>
+    </div>
+    <a class="cta" href="#" onclick="alert('購入リンクは販売時に設定してください');return false">お守りを手に入れる →</a>
+    <div class="cta-note">月額なし・広告なし・登録不要</div>
+  </div>
+</section>
+
+<!-- ======== FAQ ======== -->
+<section style="background:#fff;max-width:100%"><div style="max-width:640px;margin:0 auto">
+  <h2 class="rv">よくある質問</h2>
+  <div class="sec-sub rv"></div>
+  <details class="rv"><summary>アプリストアからダウンロードするの？</summary>
+    <p>いいえ。届いたURLをスマホで開いて「ホーム画面に追加」するだけです。iPhone・Androidどちらでも使えます。</p></details>
+  <details class="rv"><summary>個人情報や記録が漏れたりしない？</summary>
+    <p>記録はすべてあなたのスマホの中だけに保存され、外部に送信されません。会員登録も不要です。</p></details>
+  <details class="rv"><summary>医療的なことも相談できるの？</summary>
+    <p>アプリ内の情報は一般的な目安です。受診の目安や#8000などの相談先もご案内していますが、医療判断は必ず医師にご相談ください。</p></details>
+  <details class="rv"><summary>機種変更したらデータは消える？</summary>
+    <p>設定画面からワンタップでバックアップファイルを保存でき、新しいスマホで復元できます。</p></details>
+</div></section>
+
+<!-- ======== 最終CTA ======== -->
+<section class="last-cta" style="max-width:100%">
+  <h2 class="rv">がんばりすぎてるあなたへ。<br>今夜から、<span class="accent">ひとりで抱えない</span>。</h2>
+  <div class="rv" style="margin-top:8px">
+    <a class="cta" href="#price">リリース記念 980円で手に入れる</a>
+    <div class="cta-note">スマホのお守りは、今日から効きます 💗</div>
+  </div>
+</section>
+
+<footer>
+  ワンオペ育児おたすけ手帳<br>
+  本アプリの育児情報は一般的な目安であり、医療上の判断は医師・専門機関にご相談ください。
+</footer>
+
+<script>
+function reveal(){
+  document.querySelectorAll(".rv:not(.on)").forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.92 && r.bottom > 0) el.classList.add("on");
+  });
+}
+window.addEventListener("scroll", reveal, { passive: true });
+window.addEventListener("load", reveal);
+reveal();
+</script>
+</body>
+</html>
