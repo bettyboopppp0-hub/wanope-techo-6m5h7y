@@ -208,8 +208,8 @@ footer{text-align:center;padding:40px 20px 60px;font-size:11.5px;color:var(--sub
   <div class="sec-sub rv">一度買えば、ずっと使える買い切り型</div>
   <div class="price-box rv">
     <div class="tag">🎉 リリース記念価格</div>
-    <div class="price-was">通常価格 1,480円</div>
-    <div class="price-num">980<small>円（買い切り）</small></div>
+    <div class="price-was">通常価格 980円</div>
+    <div class="price-num">480<small>円（買い切り）</small></div>
     <div class="price-inc">
       <div>場面別おたすけカード 8種（40ステップ以上）</div>
       <div>ママのこころ記録＋がんばりカレンダー</div>
@@ -217,10 +217,10 @@ footer{text-align:center;padding:40px 20px 60px;font-size:11.5px;color:var(--sub
       <div>授乳・おむつのワンタップ記録＋月齢ガイド</div>
       <div>ねんねサウンド（ホワイトノイズ4種）</div>
       <div>そのまま送れる「お願いテンプレ」6種</div>
-      <div>今後のアップデートも追加料金なし</div>
+      <div>機能は随時アップデート！追加料金なしでずっと使える</div>
     </div>
-    <a class="cta" href="#" onclick="alert('購入リンクは販売時に設定してください');return false">お守りを手に入れる →</a>
-    <div class="cta-note">月額なし・広告なし・登録不要</div>
+    <a class="cta" id="buy-btn" href="#" onclick="alert('購入リンクは販売時に設定してください');return false">お守りを手に入れる →</a>
+    <div class="cta-note">月額なし・広告なし・登録不要・機能は随時アップデート</div>
   </div>
 </section>
 
@@ -242,7 +242,7 @@ footer{text-align:center;padding:40px 20px 60px;font-size:11.5px;color:var(--sub
 <section class="last-cta" style="max-width:100%">
   <h2 class="rv">がんばりすぎてるあなたへ。<br>今夜から、<span class="accent">ひとりで抱えない</span>。</h2>
   <div class="rv" style="margin-top:8px">
-    <a class="cta" href="#price">リリース記念 980円で手に入れる</a>
+    <a class="cta" href="#price">リリース記念 480円で手に入れる</a>
     <div class="cta-note">スマホのお守りは、今日から効きます 💗</div>
   </div>
 </section>
@@ -253,6 +253,15 @@ footer{text-align:center;padding:40px 20px 60px;font-size:11.5px;color:var(--sub
 </footer>
 
 <script>
+// 購入リンク：ここにBASEやStoresなどの決済ページURLを入れると、購入ボタンが有効になる
+const BUY_URL = "";
+if(BUY_URL){
+  const b = document.getElementById("buy-btn");
+  b.href = BUY_URL;
+  b.onclick = null;
+  b.target = "_blank";
+  b.rel = "noopener";
+}
 function reveal(){
   document.querySelectorAll(".rv:not(.on)").forEach(el => {
     const r = el.getBoundingClientRect();
